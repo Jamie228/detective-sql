@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="styles/main.css">
+
+    <script src="https://kit.fontawesome.com/9477a9faa7.js" crossorigin="anonymous"></script>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins&display=swap" rel="stylesheet">
+
+    <title>Unauthorised Transaction: CCTV Search</title>
+</head>
+
+<body>
+
+    <div class="hero-slim">
+        <h1>Unauthorised Transaction: CCTV Search</h1>
+        <p>You need to find the <code>access_code</code> for the CCTV footage with the <code>id</code> of
+            <code>738</code>. The table is called <code>cctv</code>, and the structure
+            seems relatively simple, so just construct a query below, run it, and then <strong>write down your
+                result!</strong> You'll be
+            asked for it when you proceed!
+        </p>
+    </div>
+
+    <div class="explan">
+        <p>SQL queries to 'read' data are usually comprised of three parts: SELECT, FROM and WHERE. We use the SELECT
+            statement to define which <em title="A field can be thought of like a column heading (like 'id', or 'name')">field(s)</em> we want the
+            query to return. FROM tells the database which
+            <em title="A table is a... Table! It holds all of our records.">table</em> we would like to select it from.
+            In this case, it is the <code>cctv</code> table. Finally,
+            the WHERE statement lets us specify some criteria for our query. In this case, we need to select data WHERE
+            the id is equal to 738.
+        </p>
+        <h3>Example</h3>
+        <p>To select the amount of bananas in a table called 'groceries', we would run this query:</p>
+        <code>SELECT amount FROM groceries WHERE name = 'bananas';</code>
+        <p>If you're looking for words in your query, like the example above, the word should be enclosed in single or
+            double quotes.</p>
+        <code>...WHERE name = 'bananas';</code>
+        <p>If you're looking for numbers, like you must do in this exercise, they do not need to be in quotes.</p>
+        <code>...WHERE amount = 10;</code>
+        <p>Remember to always finish a query with a semicolon!</p>
+    </div>
+
+    <div class="content-grid">
+
+        <div>
+            <h2 class="center">Table Structure: <code>cctv</code></h2>
+            <div>
+                <table class="structure">
+                    <thead>
+                        <tr>
+                            <th onclick="buttonPressed('id')">id <br><em>INT</em></th>
+                            <th onclick="buttonPressed('footage_name')">footage_name <br><em>VARCHAR(60)</em></th>
+                            <th onclick="buttonPressed('access_code')">access_code <br><em>VARCHAR(10)</em></th>
+                        </tr>
+                    </thead>
+                    <tbody id="query-return">
+                        <tr>
+                            <td>&hellip;</td>
+                            <td>&hellip;</td>
+                            <td>&hellip;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="center query-region">
+            <h2 class="centre">Query Builder</h2>
+            <div id="error"></div>
+            <textarea name="" id="query" cols="60" rows="3" disabled></textarea>
+            <br>
+            <button onClick="buttonPressed('SELECT')">SELECT</button>
+            <button onclick="buttonPressed('FROM')">FROM</button>
+            <button onclick="buttonPressed('WHERE')">WHERE</button>
+            <button onclick="backspace()"><i class="fas fa-backspace"></i></button>
+            <br>
+            <button onclick="buttonPressed('cctv')"><strong>cctv</strong></button>
+            <button onclick="buttonPressed('id')">id</button>
+            <button onclick="buttonPressed('footage_name')">footage_name</button>
+            <button onclick="buttonPressed('access_code')">access_code</button>
+            <br>
+            <button onclick="buttonPressed('=')">=</button>
+            <button onclick="buttonPressed('>')">&gt;</button>
+            <button onclick="buttonPressed('<')">&lt;</button>
+            <button onclick="buttonPressed('>=')">&gt;&equals;</button>
+            <button onclick="buttonPressed('<=')">&lt;&equals;</button>
+            <button onclick="buttonPressed('<>')">&lt;&gt;</button>
+            <button onclick="buttonPressed(';')">;</button>
+            <br>
+            <input type="number" id="num-input">
+            <button onclick="addNum()">Add Number</button>
+            <br>
+            <button onclick="runQuery()"><i class="fas fa-database"></i> Run Query</button>
+        </div>
+    </div>
+
+    <div id="test"></div>
+
+    <br>
+
+
+    <script src="js/sql-wasm.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        getDatabase('cctv.db');
+
+        const query_box = document.getElementById("query");
+        var expression = [];
+        const table_name = "cctv";
+        const table_columns = ["id", "footage_name", "access_code"];
+        var errors = [];
+        var error = false;
+        var statement = "";
+
+        function Component(text) {
+            var re_comparison = />|<|=/g
+            this.text = text;
+            this.safe = true;
+            if (text === "SELECT" || text === "FROM" || text === "WHERE" || text === "DELETE") {
+                this.type = "keyword";
+                if (text === "DELETE" || text === "DROP" || text === "TRUNCATE") {
+                    this.safe = false;
+                }
+            } else if (re_comparison.test(text)) {
+                this.type = "comparison";
+            } else if (text === table_name) {
+                this.type = "table_name";
+            } else if (table_columns.includes(text)) {
+                this.type = "column";
+            } else if (text === "*") {
+                this.type = "wildcard";
+            } else if (text === ";") {
+                this.type = "delimiter";
+            } else if (!isNaN(text)) {
+                this.type = "integer";
+            } else {
+                this.type = "unknown";
+                this.safe = false;
+            }
+        }
+
+        function buttonPressed(text) {
+            var c = new Component(text);
+            expression.push(c);
+            // console.log(expression);
+            // console.log(c.text);
+            displayText();
+        }
+
+        function backspace() {
+            expression.pop();
+            displayText();
+        }
+
+        function displayText() {
+            statement = "";
+            for (let index = 0; index < expression.length; index++) {
+                const element = expression[index];
+
+                console.log(index + " " + expression.length);
+
+                if (index + 1 < expression.length && expression[index + 1].text === ";") {
+                    statement += element.text;
+                } else if (index + 1 < expression.length && element.type == "column" && expression[index + 1].type == "column") {
+                    statement += element.text + ", ";
+                } else if (index != expression.length - 1) {
+                    statement += element.text + ' ';
+                } else {
+                    console.log("Done");
+                    statement += element.text;
+                }
+            }
+            query_box.value = statement;
+        }
+
+        function addNum() {
+            const num_input = document.getElementById("num-input");
+            if (num_input.value !== "") {
+                buttonPressed(num_input.value);
+            }
+            num_input.value = "";
+        }
+
+        function query() {
+            try {
+                var stmt = database.exec(query_box.value);
+                console.log(stmt);
+                return stmt;
+            } 
+            catch (err) {
+                var error_div = document.getElementById("error");
+                error_div.innerHTML = "";
+                console.log(err.message);
+                var error_info = document.createElement("p");
+                error_info.innerText = err.message;
+                error_div.appendChild(error_info);
+                return false;
+            }
+        }
+
+        function runQuery() {
+            var error_div = document.getElementById("error");
+            error_div.innerHTML = "";
+            error = false;
+            errors = [];
+            expression.forEach(c => {
+                if (c.safe === false) {
+                    error = true;
+                    errors.push("Query performs a restricted operation");
+                }
+            });
+            if (expression[expression.length - 1].type !== "delimiter") {
+                error = true;
+                errors.push("Query is not delimited");
+            }
+            if (!error) {
+                var result = query();
+                if(result !== false) {
+                    showResults(document.getElementById('test'), result, query_box.value);
+                }
+            } else {
+                errors.forEach(e => {
+                    var errorDesc = document.createElement('p');
+                    errorDesc.innerText = e;
+                    error_div.appendChild(errorDesc);
+                });
+            }
+
+        }
+    </script>
+
+</body>
+
+</html>

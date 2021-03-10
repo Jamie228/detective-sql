@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="./sql-wasm.js"></script>
+    <script>
+        filename = "sql-wasm.wasm";
+        config = {
+            locateFile: filename => `/cble-project/js/${filename}`
+        };
+
+        var database;
+        var dbInit = false;
+
+        initSqlJs().then(function (SQL) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '../db/cctv.db', true);
+            xhr.responseType = "arraybuffer";
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status >= 200 && xhr.status < 400) {
+                    var uInt8Array = new Uint8Array(xhr.response);
+                    var db = new SQL.Database(uInt8Array);
+                    database = db;
+                    console.log(db);
+                }
+            }
+            xhr.send();
+        }).then(function () {
+            dbInit = true;
+        });
+
+        function getData() {
+            var stmt = database.exec("SELECT * FROM cctv");
+            console.log(stmt);
+        }
+
+
+    </script>
+
+    <button onclick="getData()">Go!</button>
+</body>
+
+</html>
