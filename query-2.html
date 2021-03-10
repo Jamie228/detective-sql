@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,6 +13,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins&display=swap" rel="stylesheet">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/codemirror.min.js"
+        integrity="sha512-M1DpFDDFHNgGdgVsSkTP1sjfWC7mQFJM3obQo8gyKHbZmbmr95Kl9wPYa5T70BFQBi0+/TlcG6IZDLowJCbKBQ=="
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/codemirror.min.css"
+        integrity="sha512-xIf9AdJauwKIVtrVRZ0i4nHP61Ogx9fSRAkCLecmE2dL/U8ioWpDvFCAy4dcfecN72HHB9+7FfQj3aiO68aaaw=="
+        crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/theme/nord.min.css"
+        integrity="sha512-sPc4jmw78pt6HyMiyrEt3QgURcNRk091l3dZ9M309x4wM2QwnCI7bUtsLnnWXqwBMECE5YZTqV6qCDwmC2FMVA=="
+        crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/sql/sql.min.js"
+        integrity="sha512-dfObApt1XdGl62IJLrjbIOc9QtnRORA5TCwdnJkSj6C/KjwMz2L/Sc4WlcrgAuWoY+n5xTf6NMMojoUOlgwjug=="
+        crossorigin="anonymous"></script>
+
     <title>Unauthorised Transaction: The Masked Gnome</title>
 </head>
 
@@ -23,11 +37,97 @@
             we should just return all the records?</p>
     </div>
     <div class="explan">
-        <p>Good job on that first query. For this one, we need to return all the records in the database. The first thing to consider is that not all queries need a <code>WHERE</code> clause - you only need it if you want to refine the data being returned.</p>
-        <p>Secondly, if you'd like to return all the columns, you don't have to waste time typing out all the column names. Just use <code>*</code> in their place instead.</p>
+        <p>Good job on that first query. For this one, we need to return all the records in the database. The first
+            thing to consider is that not all queries need a <code>WHERE</code> clause - you only need it if you want to
+            refine the data being returned.</p>
+        <p>Secondly, if you'd like to return all the columns, you don't have to waste time typing out all the column
+            names. Just use <code>*</code> in their place instead.</p>
         <h3>Example</h3>
         <p>To select the all the records in our <code>groceries</code> table, we'd use the following syntax.</p>
         <code>SELECT * FROM groceries;</code>
     </div>
+
+    <style>
+        .content-grid th:hover {
+            cursor: default;
+        }
+    </style>
+
+    <div class="content-grid">
+
+        <div>
+            <h2 class="center">Table Structure: <code>purchases</code></h2>
+            <div>
+                <table class="structure">
+                    <thead>
+                        <tr>
+                            <th>customer_description <br><em>TEXT</em></th>
+                            <th>items_purchased <br><em>TEXT</em></th>
+                            <th>amount_paid <br><em>REAL</em></th>
+                        </tr>
+                    </thead>
+                    <tbody id="query-return">
+                        <tr>
+                            <td>&hellip;</td>
+                            <td>&hellip;</td>
+                            <td>&hellip;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="query-region">
+            <h2 class="center">Query Writer</h2>
+            <textarea id="code" rows="3"></textarea>
+            <div class="center"><button onclick="runQuery()" class="center" id="run-button"><i
+                        class="fas fa-database"></i> Run Query</button></div>
+        </div>
+    </div>
+
+    <div id="test"></div>
+
+    <br>
+
+    <script src="js/sql-wasm.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+            lineNumbers: true,
+            mode: 'text/x-sql',
+            smartIndent: true,
+            indentWithTabs: true,
+            lineWrapping: false,
+            scrollbarStyle: "null",
+            theme: 'nord',
+            viewportMargin: Infinity
+        });
+
+        function run(query) {
+            try {
+                var stmt = database.exec(query);
+                return stmt;
+            } catch (err) {
+                var error_div = document.getElementById("error");
+                error_div.innerHTML = "";
+                console.log(err.message);
+                var error_info = document.createElement("p");
+                error_info.innerText = err.message;
+                error_div.appendChild(error_info);
+                return false;
+            }
+        }
+
+        function runQuery() {
+            var query = editor.getValue();
+            var result = run(query);
+            if (result !== false) {
+                showResults(document.getElementById('test'), result, query);
+            }
+        }
+    </script>
+    <script>
+        getDatabase('costume_shop.db');
+    </script>
 </body>
+
 </html>
