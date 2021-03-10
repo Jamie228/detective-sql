@@ -84,3 +84,72 @@ function showResults(wrapper, results, statement) {
     wrapper.scrollIntoView({behavior: 'smooth'});
 
 }
+
+function Component(text) {
+    var re_comparison = />|<|=/g
+    this.text = text;
+    this.safe = true;
+    if (text === "SELECT" || text === "FROM" || text === "WHERE" || text === "DELETE") {
+        this.type = "keyword";
+        if (text === "DELETE" || text === "DROP" || text === "TRUNCATE") {
+            this.safe = false;
+        }
+    } else if (re_comparison.test(text)) {
+        this.type = "comparison";
+    } else if (text === table_name) {
+        this.type = "table_name";
+    } else if (table_columns.includes(text)) {
+        this.type = "column";
+    } else if (text === "*") {
+        this.type = "wildcard";
+    } else if (text === ";") {
+        this.type = "delimiter";
+    } else if (!isNaN(text)) {
+        this.type = "integer";
+    } else {
+        this.type = "unknown";
+        this.safe = false;
+    }
+}
+
+function buttonPressed(text) {
+    var c = new Component(text);
+    expression.push(c);
+    // console.log(expression);
+    // console.log(c.text);
+    displayText();
+}
+
+function backspace() {
+    expression.pop();
+    displayText();
+}
+
+function displayText() {
+    statement = "";
+    for (let index = 0; index < expression.length; index++) {
+        const element = expression[index];
+
+        console.log(index + " " + expression.length);
+
+        if (index + 1 < expression.length && expression[index + 1].text === ";") {
+            statement += element.text;
+        } else if (index + 1 < expression.length && element.type == "column" && expression[index + 1].type == "column") {
+            statement += element.text + ", ";
+        } else if (index != expression.length - 1) {
+            statement += element.text + ' ';
+        } else {
+            console.log("Done");
+            statement += element.text;
+        }
+    }
+    query_box.value = statement;
+}
+
+function addNum(id) {
+    const num_input = document.getElementById(id);
+    if (num_input.value !== "") {
+        buttonPressed(num_input.value);
+    }
+    num_input.value = "";
+}
