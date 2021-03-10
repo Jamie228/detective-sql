@@ -163,6 +163,11 @@ table, th, td {
     height: auto;
 }
 
+.h5-wrap {
+    margin: 0 auto;
+    width: 75%;
+}
+
 /*QUERY*/
 
 .query-region button {

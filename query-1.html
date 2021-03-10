@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,6 +12,8 @@
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins&display=swap" rel="stylesheet">
+
+    <script src="https://h5p.org/sites/all/modules/h5p/library/js/h5p-resizer.js" charset="UTF-8"></script>
 
     <title>Unauthorised Transaction: CCTV Search</title>
 </head>
@@ -27,24 +30,25 @@
         </p>
     </div>
 
+    <br>
+
+    <div class="h5-wrap">
+        <iframe src="https://h5p.org/h5p/embed/1123463" width="1090" height="677" frameborder="0"
+            allowfullscreen="allowfullscreen"
+            allow="geolocation *; microphone *; camera *; midi *; encrypted-media *"></iframe>
+        <script src="https://h5p.org/sites/all/modules/h5p/library/js/h5p-resizer.js" charset="UTF-8"></script>
+    </div>
+
     <div class="explan">
         <p>SQL queries to 'read' data are usually comprised of three parts: SELECT, FROM and WHERE. We use the SELECT
-            statement to define which <em title="A field can be thought of like a column heading (like 'id', or 'name')">field(s)</em> we want the
+            statement to define which <em
+                title="A field can be thought of like a column heading (like 'id', or 'name')">field(s)</em> we want the
             query to return. FROM tells the database which
             <em title="A table is a... Table! It holds all of our records.">table</em> we would like to select it from.
             In this case, it is the <code>cctv</code> table. Finally,
             the WHERE statement lets us specify some criteria for our query. In this case, we need to select data WHERE
             the id is equal to 738.
         </p>
-        <h3>Example</h3>
-        <p>To select the amount of bananas in a table called 'groceries', we would run this query:</p>
-        <code>SELECT amount FROM groceries WHERE name = 'bananas';</code>
-        <p>If you're looking for words in your query, like the example above, the word should be enclosed in single or
-            double quotes.</p>
-        <code>...WHERE name = 'bananas';</code>
-        <p>If you're looking for numbers, like you must do in this exercise, they do not need to be in quotes.</p>
-        <code>...WHERE amount = 10;</code>
-        <p>Remember to always finish a query with a semicolon!</p>
     </div>
 
     <div class="content-grid">
@@ -125,8 +129,7 @@
             try {
                 var stmt = database.exec(query_box.value);
                 return stmt;
-            } 
-            catch (err) {
+            } catch (err) {
                 var error_div = document.getElementById("error");
                 error_div.innerHTML = "";
                 console.log(err.message);
@@ -154,7 +157,7 @@
             }
             if (!error) {
                 var result = query();
-                if(result !== false) {
+                if (result !== false) {
                     showResults(document.getElementById('test'), result, query_box.value);
                 }
             } else {
