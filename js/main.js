@@ -22,6 +22,13 @@ function getDatabase(dbName) {
     });
 }
 
+function Exercise(name, rrv, rrc, next) {
+    this.name = name;
+    this.rrv = rrv;
+    this.rrc = rrc;
+    this.next = next;
+}
+
 function showResults(wrapper, results, statement) {
 
     wrapper.innerHTML = "";
@@ -47,6 +54,12 @@ function showResults(wrapper, results, statement) {
     count_info.style.fontStyle = 'italic';
     wrapper.appendChild(count_info);
 
+    let query_feedback = document.createElement('div');
+    query_feedback.id = "feedback";
+    wrapper.appendChild(query_feedback);
+
+    getFeedback(results);
+
     let table_wrapper = document.createElement('table');
     table_wrapper.className = "results";
     let thead = document.createElement('thead');
@@ -68,7 +81,17 @@ function showResults(wrapper, results, statement) {
             let tr = document.createElement('tr');
             //console.log(element);
             element.forEach(i => {
-                console.log(i);
+                if(i == exercise.rrv) {
+                    var fb = document.getElementById('feedback');
+                    fb.className = "center success";
+                    let p = document.createElement('p');
+                    p.innerText = "Great job! ";
+                    var a = document.createElement('a');
+                    a.href = exercise.next;
+                    a.innerText = "Proceed";
+                    p.appendChild(a);
+                    fb.appendChild(p);
+                }
                 let td = document.createElement('td');
                 td.innerText = i;
                 tr.appendChild(td);
@@ -79,6 +102,17 @@ function showResults(wrapper, results, statement) {
         results[0].values.forEach(element => {
             let tr = document.createElement('tr');
             element.forEach(i => {
+                if(i == exercise.rrv) {
+                    var fb = document.getElementById('feedback');
+                    fb.className = "center success";
+                    let p = document.createElement('p');
+                    p.innerText = "Great job! ";
+                    var a = document.createElement('a');
+                    a.href = exercise.next;
+                    a.innerText = "Proceed";
+                    p.appendChild(a);
+                    fb.appendChild(p);
+                }
                 let td = document.createElement('td');
                 td.innerText = i;
                 tr.appendChild(td);
@@ -165,4 +199,30 @@ function addNum(id) {
 
 function reloadDB(db_name) {
     getDatabase(db_name);
+}
+
+function getFeedback(results) {
+    console.log(results);
+    let query_feedback = document.getElementById('feedback');
+
+    if(exercise.name == 'cctv') {
+        if (!results[0].columns.includes(exercise.rrc)) {
+            query_feedback.className = "center negative";
+            let p = document.createElement('p');
+            p.innerText = "It doesn't look like you're returning the right column(s) for this exercise.";
+            query_feedback.appendChild(p);
+        } else if (results[0].values.length > 15) {
+            query_feedback.className = "center negative";
+            let p = document.createElement('p');
+            p.innerText = "It looks like you're returning too much data - you might not be able to see the data you want";
+            query_feedback.appendChild(p);
+        }
+    } else if (exercise.name == "costume") {
+        if (!results[0].columns.includes(exercise.rrc)) {
+            query_feedback.className = "center negative";
+            let p = document.createElement('p');
+            p.innerText = "It doesn't look like you're returning the right column(s) for this exercise.";
+            query_feedback.appendChild(p);
+        }
+    }
 }

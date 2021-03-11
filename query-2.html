@@ -36,16 +36,19 @@
             structure on this is particularly iffy, but luckily it doesn't look like she has many records in it. Maybe
             we should just return all the records?</p>
     </div>
+
+    <br>
+
+    <div class="h5-wrap">
+        <iframe src="https://h5p.org/h5p/embed/1123930" width="1090" height="677" frameborder="0" allowfullscreen="allowfullscreen" allow="geolocation *; microphone *; camera *; midi *; encrypted-media *"></iframe><script src="https://h5p.org/sites/all/modules/h5p/library/js/h5p-resizer.js" charset="UTF-8"></script>
+    </div>
+
     <div class="explan">
         <p>Good job on that first query. For this one, we need to return all the records in the database. The first
             thing to consider is that not all queries need a <code>WHERE</code> clause - you only need it if you want to
             refine the data being returned.</p>
         <p>Secondly, if you'd like to return all the columns, you don't have to waste time typing out all the column
             names. Just use <code>*</code> in their place instead.</p>
-        <h3>Example</h3>
-        <p>To select the all the records in our <code>groceries</code> table, we'd use the following syntax.</p>
-        <code>SELECT * FROM groceries;</code>
-    </div>
 
     <style>
         .content-grid th:hover {
@@ -76,11 +79,18 @@
                 </table>
             </div>
         </div>
+        <style>
+            #reload {
+                font-size: 16px;
+            }
+        </style>
         <div class="query-region">
             <h2 class="center">Query Writer</h2>
+            <div id="error" class="center"></div>
             <textarea id="code" rows="3"></textarea>
             <div class="center"><button onclick="runQuery()" class="center" id="run-button"><i
-                        class="fas fa-database"></i> Run Query</button></div>
+                        class="fas fa-database"></i> Run Query</button>
+                <button id="reload"><i class="fas fa-sync-alt"></i> Reload DB</button></div>
         </div>
     </div>
 
@@ -91,6 +101,9 @@
     <script src="js/sql-wasm.js"></script>
     <script src="js/main.js"></script>
     <script>
+        const exercise = new Exercise('costume', "White jacket, chef's hat. Baker?", "customer_description",
+            "narrative3.html");
+
         var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
             lineNumbers: true,
             mode: 'text/x-sql',
@@ -127,6 +140,10 @@
     </script>
     <script>
         getDatabase('costume_shop.db');
+        var reload = document.getElementById('reload');
+        reload.addEventListener('click', function () {
+            reloadDB('costume_shop.db');
+        });
     </script>
 </body>
 

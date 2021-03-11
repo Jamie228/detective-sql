@@ -172,6 +172,14 @@ table, th, td {
     cursor: pointer;
 }
 
+.success {
+    color: green;
+}
+
+.negative {
+    color: red;
+}
+
 /*QUERY*/
 
 .query-region button {
@@ -214,7 +222,6 @@ textarea {
 #run-button {
     font-size: 16px;
 }
-
 @media all and (max-width: 1000px) {
     .content-grid { grid-template-columns: 100%; }
 }

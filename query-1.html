@@ -123,6 +123,8 @@
 
     <script>
         getDatabase('cctv.db');
+        const exercise = new Exercise('cctv', 'waniwadoda', 'access_code', '/narrative2.html');
+        var result_returned = false;
 
         var reload = document.getElementById('reload');
         reload.addEventListener('click', function() {
