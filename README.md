@@ -4,3 +4,4 @@ Assignment 011 for the Computer-Based Learning Environment module. A learning so
 ## Libraries Used
 - SQL.js: For interacting with non-persistent SQLite databases
 - CodeMirror: For proper code formatting
+- Tingle: For modals
