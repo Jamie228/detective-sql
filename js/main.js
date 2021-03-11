@@ -25,6 +25,7 @@ function getDatabase(dbName) {
 function showResults(wrapper, results, statement) {
 
     wrapper.innerHTML = "";
+    let result_count = results[0].values.length;
 
     let header = document.createElement('h2');
     header.className = "center";
@@ -37,6 +38,14 @@ function showResults(wrapper, results, statement) {
     query.innerText = "Your Query: " + statement;
     wrapper.appendChild(query);
 
+    let count_info = document.createElement('h4');
+    count_info.className = "center";
+    count_info.innerText = "Your query returned " + result_count + " result(s)";
+    if(result_count > 15) {
+        count_info.innerText += ", but only 15 are shown below.";
+    }
+    count_info.style.fontStyle = 'italic';
+    wrapper.appendChild(count_info);
 
     let table_wrapper = document.createElement('table');
     table_wrapper.className = "results";
@@ -53,7 +62,7 @@ function showResults(wrapper, results, statement) {
     table_wrapper.appendChild(thead);
 
     let tbody = document.createElement('tbody');
-    if (results[0].values.length > 15) {
+    if (result_count > 15) {
         for (let index = 0; index < 15; index++) {
             const element = results[0].values[index];
             let tr = document.createElement('tr');
@@ -152,4 +161,8 @@ function addNum(id) {
         buttonPressed(num_input.value);
     }
     num_input.value = "";
+}
+
+function reloadDB(db_name) {
+    getDatabase(db_name);
 }

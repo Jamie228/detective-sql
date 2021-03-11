@@ -168,6 +168,10 @@ table, th, td {
     width: 75%;
 }
 
+#how-to:hover {
+    cursor: pointer;
+}
+
 /*QUERY*/
 
 .query-region button {

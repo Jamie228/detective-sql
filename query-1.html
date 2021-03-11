@@ -13,6 +13,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins&display=swap" rel="stylesheet">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.js" integrity="sha512-plGUER9JkeEWPPqQBE4sdLqBoQug5Ap+BCGMc7bJ8BXkm+VVj6QzkpBz5Yv2yPkkq+cqg9IpkBaGCas6uDbW8g==" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.css" integrity="sha512-j1u8eUJ4f23xPPxwOrLUPQaCD2dwzNqqmDDcWS4deWsMv2ohLqmXXuP3hU7g8TyzbMSakP/mMqoNBYWj8AEIFg==" crossorigin="anonymous" />
+
     <script src="https://h5p.org/sites/all/modules/h5p/library/js/h5p-resizer.js" charset="UTF-8"></script>
 
     <title>Unauthorised Transaction: CCTV Search</title>
@@ -77,6 +80,9 @@
 
         <div class="center query-region">
             <h2 class="centre">Query Builder</h2>
+            <div id="how-to">
+                <p><em>How do I use this?</em></p>
+            </div>
             <div id="error"></div>
             <textarea name="" id="query" cols="60" rows="3" disabled></textarea>
             <br>
@@ -103,6 +109,7 @@
             <button onclick='addNum("num-input");'>Add Number</button>
             <br>
             <button onclick="runQuery()"><i class="fas fa-database"></i> Run Query</button>
+            <button id="reload"><i class="fas fa-sync-alt"></i> Reload DB</button>
         </div>
     </div>
 
@@ -117,6 +124,11 @@
     <script>
         getDatabase('cctv.db');
 
+        var reload = document.getElementById('reload');
+        reload.addEventListener('click', function() {
+            reloadDB('cctv.db');
+        });
+
         const query_box = document.getElementById("query");
         var expression = [];
         const table_name = "cctv";
@@ -124,6 +136,25 @@
         var errors = [];
         var error = false;
         var statement = "";
+
+        var modal = new tingle.modal({
+            footer: false,
+            closeMethods: ['overlay', 'escape', 'button'],
+            closeLabel: 'Close'
+        });
+
+        modal.setContent(`
+        <h2>Using the Query Builder</h2>
+        <p>Click the buttons underneath the box to add elements to your query. Do not worry about spacing or commas, as this is taken care of for you. The backspace button will remove your latest addition to the query.</p>
+        <p>The first row contains important keywords for constructing a query. The second row contains the table and column names; the table name is in bold. The third row contains some comparison operators, some wildcards and the semicolon delimiter - you should finish your query with this! Finally, the fourth row allows you to add a number to the query. Type your number into the box and then press add number.</p>
+        <p>When you're satisfied with your query, press Run Query. If the query is successful, the system will show you the returned results. It might also show you an error if there is a problem with your query.</p>
+        <p>Finally, if you're worried you've done something wrong (or maybe even deleted something you shouldn't have!) just press the Reload DB button. No harm done!</p>
+        `);
+
+        var info_modal_trigger = document.getElementById('how-to');
+        info_modal_trigger.addEventListener('click', function () {
+            modal.open();
+        });
 
         function query() {
             try {
