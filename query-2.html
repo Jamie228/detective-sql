@@ -6,6 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
     <link rel="stylesheet" href="styles/main.css">
 
     <script src="https://kit.fontawesome.com/9477a9faa7.js" crossorigin="anonymous"></script>
@@ -40,7 +45,10 @@
     <br>
 
     <div class="h5-wrap">
-        <iframe src="https://h5p.org/h5p/embed/1123930" width="1090" height="677" frameborder="0" allowfullscreen="allowfullscreen" allow="geolocation *; microphone *; camera *; midi *; encrypted-media *"></iframe><script src="https://h5p.org/sites/all/modules/h5p/library/js/h5p-resizer.js" charset="UTF-8"></script>
+        <iframe src="https://h5p.org/h5p/embed/1123930" width="1090" height="677" frameborder="0"
+            allowfullscreen="allowfullscreen"
+            allow="geolocation *; microphone *; camera *; midi *; encrypted-media *"></iframe>
+        <script src="https://h5p.org/sites/all/modules/h5p/library/js/h5p-resizer.js" charset="UTF-8"></script>
     </div>
 
     <div class="explan">
@@ -50,101 +58,101 @@
         <p>Secondly, if you'd like to return all the columns, you don't have to waste time typing out all the column
             names. Just use <code>*</code> in their place instead.</p>
 
-    <style>
-        .content-grid th:hover {
-            cursor: default;
-        }
-    </style>
-
-    <div class="content-grid">
-
-        <div>
-            <h2 class="center">Table Structure: <code>purchases</code></h2>
-            <div>
-                <table class="structure">
-                    <thead>
-                        <tr>
-                            <th>customer_description <br><em>TEXT</em></th>
-                            <th>items_purchased <br><em>TEXT</em></th>
-                            <th>amount_paid <br><em>REAL</em></th>
-                        </tr>
-                    </thead>
-                    <tbody id="query-return">
-                        <tr>
-                            <td>&hellip;</td>
-                            <td>&hellip;</td>
-                            <td>&hellip;</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
         <style>
-            #reload {
-                font-size: 16px;
+            .content-grid th:hover {
+                cursor: default;
             }
         </style>
-        <div class="query-region">
-            <h2 class="center">Query Writer</h2>
-            <div id="error" class="center"></div>
-            <textarea id="code" rows="3"></textarea>
-            <div class="center"><button onclick="runQuery()" class="center" id="run-button"><i
-                        class="fas fa-database"></i> Run Query</button>
-                <button id="reload"><i class="fas fa-sync-alt"></i> Reload DB</button></div>
+
+        <div class="content-grid">
+
+            <div>
+                <h2 class="center">Table Structure: <code>purchases</code></h2>
+                <div>
+                    <table class="structure">
+                        <thead>
+                            <tr>
+                                <th>customer_description <br><em>TEXT</em></th>
+                                <th>items_purchased <br><em>TEXT</em></th>
+                                <th>amount_paid <br><em>REAL</em></th>
+                            </tr>
+                        </thead>
+                        <tbody id="query-return">
+                            <tr>
+                                <td>&hellip;</td>
+                                <td>&hellip;</td>
+                                <td>&hellip;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <style>
+                #reload {
+                    font-size: 16px;
+                }
+            </style>
+            <div class="query-region">
+                <h2 class="center">Query Writer</h2>
+                <div id="error" class="center"></div>
+                <textarea id="code" rows="3"></textarea>
+                <div class="center"><button onclick="runQuery()" class="center" id="run-button"><i
+                            class="fas fa-database"></i> Run Query</button>
+                    <button id="reload"><i class="fas fa-sync-alt"></i> Reload DB</button></div>
+            </div>
         </div>
-    </div>
 
-    <div id="test"></div>
+        <div id="test"></div>
 
-    <br>
+        <br>
 
-    <script src="js/sql-wasm.js"></script>
-    <script src="js/main.js"></script>
-    <script>
-        const exercise = new Exercise('costume', "White jacket, chef's hat. Baker?", "customer_description",
-            "narrative3.html");
+        <script src="js/sql-wasm.js"></script>
+        <script src="js/main.js"></script>
+        <script>
+            const exercise = new Exercise('costume', "White jacket, chef's hat. Baker?", "customer_description",
+                "narrative3.html");
 
-        var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
-            lineNumbers: true,
-            mode: 'text/x-sql',
-            smartIndent: true,
-            indentWithTabs: true,
-            lineWrapping: false,
-            scrollbarStyle: "null",
-            theme: 'nord',
-            viewportMargin: Infinity
-        });
+            var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+                lineNumbers: true,
+                mode: 'text/x-sql',
+                smartIndent: true,
+                indentWithTabs: true,
+                lineWrapping: false,
+                scrollbarStyle: "null",
+                theme: 'nord',
+                viewportMargin: Infinity
+            });
 
-        function run(query) {
-            try {
-                var stmt = database.exec(query);
-                return stmt;
-            } catch (err) {
-                var error_div = document.getElementById("error");
-                error_div.innerHTML = "";
-                console.log(err.message);
-                var error_info = document.createElement("p");
-                error_info.innerText = err.message;
-                error_div.appendChild(error_info);
-                return false;
+            function run(query) {
+                try {
+                    var stmt = database.exec(query);
+                    return stmt;
+                } catch (err) {
+                    var error_div = document.getElementById("error");
+                    error_div.innerHTML = "";
+                    console.log(err.message);
+                    var error_info = document.createElement("p");
+                    error_info.innerText = err.message;
+                    error_div.appendChild(error_info);
+                    return false;
+                }
             }
-        }
 
-        function runQuery() {
-            var query = editor.getValue();
-            var result = run(query);
-            if (result !== false) {
-                showResults(document.getElementById('test'), result, query);
+            function runQuery() {
+                var query = editor.getValue();
+                var result = run(query);
+                if (result !== false) {
+                    showResults(document.getElementById('test'), result, query);
+                }
             }
-        }
-    </script>
-    <script>
-        getDatabase('costume_shop.db');
-        var reload = document.getElementById('reload');
-        reload.addEventListener('click', function () {
-            reloadDB('costume_shop.db');
-        });
-    </script>
+        </script>
+        <script>
+            getDatabase('costume_shop.db');
+            var reload = document.getElementById('reload');
+            reload.addEventListener('click', function () {
+                reloadDB('costume_shop.db');
+            });
+        </script>
 </body>
 
 </html>
