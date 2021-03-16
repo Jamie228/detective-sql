@@ -42,7 +42,7 @@ function showResults(wrapper, results, statement) {
     let query = document.createElement('p');
     query.style.fontWeight = "bold";
     query.className = "center";
-    query.innerText = "Your Query: " + statement;
+    query.innerText = "Your Query: " + statement.replace(/\r|\n/g, ' ');
     wrapper.appendChild(query);
 
     let count_info = document.createElement('h4');
@@ -222,6 +222,18 @@ function getFeedback(results) {
             query_feedback.className = "center negative";
             let p = document.createElement('p');
             p.innerText = "It doesn't look like you're returning the right column(s) for this exercise.";
+            query_feedback.appendChild(p);
+        }
+    } else if (exercise.name == "bakery") {
+        if (!results[0].columns.includes(exercise.rrc)) {
+            query_feedback.className = "center negative";
+            let p = document.createElement('p');
+            p.innerText = "It doesn't look like you're returning the right column(s) for this exercise.";
+            query_feedback.appendChild(p);
+        } else if (results[0].values.length > 15) {
+            query_feedback.className = "center negative";
+            let p = document.createElement('p');
+            p.innerText = "It looks like you're returning too much data - you might not be able to see the data you want";
             query_feedback.appendChild(p);
         }
     }
