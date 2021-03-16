@@ -39,10 +39,9 @@
         <h1>Unauthorised Transaction: The Baker's Error</h1>
         <p>So, Stephen Pecan-Brownie seems to have messed up big time. It appears he has shipped out some bread with the
             mask used to commit the crime baked into it! Stephen knows that it was sent out in batch number
-            <code>3269</code> and that he noticed it was missing after packing up some <code>sourdough</code> bread.
+            <code>"K50"</code> and that he noticed it was missing after packing up some <code>"sourdough"</code> bread.
             Guess we better find out where it went!</p>
     </div>
-
 
     <style>
         .content-grid th:hover {
@@ -97,7 +96,7 @@
     <script src="js/sql-wasm.js"></script>
     <script src="js/main.js"></script>
     <script>
-        const exercise = new Exercise('bakery', "White jacket, chef's hat. Baker?", "customer_description",
+        const exercise = new Exercise('bakery', "Village Hall, Council Plaza", "delivery_address",
             "narrative4.html");
 
         var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
