@@ -129,6 +129,8 @@
         });
 
         function run(query) {
+            var error_div = document.getElementById("error");
+            error_div.innerHTML = "";
             try {
                 var stmt = database.exec(query);
                 return stmt;
