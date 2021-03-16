@@ -42,6 +42,106 @@
             <code>3269</code> and that he noticed it was missing after packing up some <code>sourdough</code> bread.
             Guess we better find out where it went!</p>
     </div>
+
+
+    <style>
+        .content-grid th:hover {
+            cursor: default;
+        }
+    </style>
+
+    <div class="content-grid">
+
+        <div>
+            <h2 class="center">Table Structure: <code>deliveries</code></h2>
+            <div>
+                <table class="structure">
+                    <thead>
+                        <tr>
+                            <th>id <br><em>INTEGER</em></th>
+                            <th>batch_no <br><em>VARCHAR(3)</em></th>
+                            <th>bread_type <br><em>VARCHAR(30)</em></th>
+                            <th>delivery_address <br><em>TEXT</em></th>
+                        </tr>
+                    </thead>
+                    <tbody id="query-return">
+                        <tr>
+                            <td>&hellip;</td>
+                            <td>&hellip;</td>
+                            <td>&hellip;</td>
+                            <td>&hellip;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <style>
+            #reload {
+                font-size: 16px;
+            }
+        </style>
+        <div class="query-region">
+            <h2 class="center">Query Writer</h2>
+            <div id="error" class="center"></div>
+            <textarea id="code" rows="3"></textarea>
+            <div class="center"><button onclick="runQuery()" class="center" id="run-button"><i
+                        class="fas fa-database"></i> Run Query</button>
+                <button id="reload"><i class="fas fa-sync-alt"></i> Reload DB</button></div>
+        </div>
+    </div>
+
+    <div id="test"></div>
+
+    <br>
+
+    <script src="js/sql-wasm.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        const exercise = new Exercise('bakery', "White jacket, chef's hat. Baker?", "customer_description",
+            "narrative4.html");
+
+        var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+            lineNumbers: true,
+            mode: 'text/x-sql',
+            smartIndent: true,
+            indentWithTabs: true,
+            lineWrapping: false,
+            scrollbarStyle: "null",
+            theme: 'nord',
+            viewportMargin: Infinity
+        });
+
+        function run(query) {
+            try {
+                var stmt = database.exec(query);
+                return stmt;
+            } catch (err) {
+                var error_div = document.getElementById("error");
+                error_div.innerHTML = "";
+                console.log(err.message);
+                var error_info = document.createElement("p");
+                error_info.innerText = err.message;
+                error_div.appendChild(error_info);
+                return false;
+            }
+        }
+
+        function runQuery() {
+            var query = editor.getValue();
+            var result = run(query);
+            if (result !== false) {
+                showResults(document.getElementById('test'), result, query);
+            }
+        }
+    </script>
+    <script>
+        getDatabase('bakery.db');
+        var reload = document.getElementById('reload');
+        reload.addEventListener('click', function () {
+            reloadDB('bakery.db');
+        });
+    </script>
+
 </body>
 
 </html>
