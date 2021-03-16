@@ -146,6 +146,10 @@ table, th, td {
     margin-right: auto;
 }
 
+.results th {
+    padding: 15px;
+}
+
 /* CONTENT */
 .content-grid {
     display: grid;
