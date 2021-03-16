@@ -161,6 +161,7 @@ table, th, td {
 
 .explan {
     padding: 20px;
+    font-family: var(--poppins);
 }
 
 .content-grid div {
