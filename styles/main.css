@@ -164,6 +164,14 @@ table, th, td {
     font-family: var(--poppins);
 }
 
+#test {
+    overflow-x: auto;
+}
+
+#test p {
+    padding: 0 10px;
+}
+
 .content-grid div {
     height: auto;
 }
