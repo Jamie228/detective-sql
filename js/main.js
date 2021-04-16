@@ -158,8 +158,6 @@ function Component(text) {
 function buttonPressed(text) {
     var c = new Component(text);
     expression.push(c);
-    // console.log(expression);
-    // console.log(c.text);
     displayText();
 }
 
@@ -173,16 +171,15 @@ function displayText() {
     for (let index = 0; index < expression.length; index++) {
         const element = expression[index];
 
-        console.log(index + " " + expression.length);
-
         if (index + 1 < expression.length && expression[index + 1].text === ";") {
             statement += element.text;
-        } else if (index + 1 < expression.length && element.type == "column" && expression[index + 1].type == "column") {
+        } else if (index + 1 < expression.length 
+            && element.type == "column" 
+            && expression[index + 1].type == "column") {
             statement += element.text + ", ";
         } else if (index != expression.length - 1) {
             statement += element.text + ' ';
         } else {
-            console.log("Done");
             statement += element.text;
         }
     }
