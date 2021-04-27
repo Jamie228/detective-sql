@@ -15,6 +15,13 @@
 
     <script src="https://kit.fontawesome.com/9477a9faa7.js" crossorigin="anonymous"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.js"
+        integrity="sha512-plGUER9JkeEWPPqQBE4sdLqBoQug5Ap+BCGMc7bJ8BXkm+VVj6QzkpBz5Yv2yPkkq+cqg9IpkBaGCas6uDbW8g=="
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.css"
+        integrity="sha512-j1u8eUJ4f23xPPxwOrLUPQaCD2dwzNqqmDDcWS4deWsMv2ohLqmXXuP3hU7g8TyzbMSakP/mMqoNBYWj8AEIFg=="
+        crossorigin="anonymous" />
+
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins&display=swap" rel="stylesheet">
 
@@ -37,11 +44,40 @@
                 The local bank has been robbed overnight, and it is up to you to query your way around town to find the
                 culprit. Piece together the clues to find the robber and bring him to justice. Good luck!
             </p>
-            <a href="narrative1.html"><i class="fas fa-play"></i> Play Now!</a>
+            <a id="start-link"><i class="fas fa-play"></i> Play Now!</a>
             <br>
             <br>
         </div>
     </div>
+
+    <script type="text/javascript">
+        var modal = new tingle.modal({
+            cssClass: ['fr'],
+            footer: true,
+            closeMethods: ['overlay', 'escape', 'button'],
+            closeLabel: 'Close'
+        });
+
+        //Redirect user to narrative1.html//
+
+        modal.setContent(`
+            <h1>Before You Start!</h1>
+            <p>When you're solving a problem, you'll be given the task in a banner at the top of the screen.</p>
+            <p>You'll always see an outline of the database schema on the left of the screen. This shows the table(s) involved
+                in the exercise along with the column names and data types. This will help you construct your queries, because it
+                tells you exactly how to spell the column names and how you should be looking data up.</p>
+        `);
+
+        modal.addFooterBtn('Let\'s Start!', 'tingle-btn orange', function() {
+            window.location.href = "narrative1.html";
+        });
+
+        var start_link = document.getElementById('start-link');
+        start_link.addEventListener('click', function() {
+            modal.open();
+        });
+
+    </script>
 
 </body>
 

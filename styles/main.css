@@ -159,6 +159,21 @@ table, th, td {
     margin-right: 20px;
 }
 
+#start-link {
+    cursor: pointer;
+}
+
+.fr h1 {
+    font-family: var(--fredoka);
+}
+
+.orange {
+    background-color: #FF8C00 !important;
+    color: black !important;
+    border-radius: 4px !important;
+    font-family: var(--poppins) !important;
+}
+
 .explan {
     padding: 20px;
     font-family: var(--poppins);
