@@ -18,6 +18,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.js"
+        integrity="sha512-plGUER9JkeEWPPqQBE4sdLqBoQug5Ap+BCGMc7bJ8BXkm+VVj6QzkpBz5Yv2yPkkq+cqg9IpkBaGCas6uDbW8g=="
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.css"
+        integrity="sha512-j1u8eUJ4f23xPPxwOrLUPQaCD2dwzNqqmDDcWS4deWsMv2ohLqmXXuP3hU7g8TyzbMSakP/mMqoNBYWj8AEIFg=="
+        crossorigin="anonymous" />
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/codemirror.min.js"
         integrity="sha512-M1DpFDDFHNgGdgVsSkTP1sjfWC7mQFJM3obQo8gyKHbZmbmr95Kl9wPYa5T70BFQBi0+/TlcG6IZDLowJCbKBQ=="
         crossorigin="anonymous"></script>
@@ -52,109 +61,146 @@
     </div>
 
     <div class="explan">
-        <p>Good job on that first query. For this one, we need to return all the records in the database. The first
+        <p>Good job on that first query. For this one, we need to return all the records in the <span id="database_pop"
+                class="tt">database</span>. The first
             thing to consider is that not all queries need a <code>WHERE</code> clause - you only need it if you want to
             refine the data being returned.</p>
         <p>Secondly, if you'd like to return all the columns, you don't have to waste time typing out all the column
             names. Just use <code>*</code> in their place instead.</p>
     </div>
 
-        <style>
-            .content-grid th:hover {
-                cursor: default;
-            }
-        </style>
+    <style>
+        .content-grid th:hover {
+            cursor: default;
+        }
+    </style>
 
-        <div class="content-grid">
+    <div class="content-grid">
 
+        <div>
+            <h2 class="center">Table Structure: <code>purchases</code></h2>
             <div>
-                <h2 class="center">Table Structure: <code>purchases</code></h2>
-                <div>
-                    <table class="structure">
-                        <thead>
-                            <tr>
-                                <th>customer_description <br><em>VARCHAR(60)</em></th>
-                                <th>items_purchased <br><em>VARCHAR(30)</em></th>
-                                <th>amount_paid <br><em>DECIMAL</em></th>
-                            </tr>
-                        </thead>
-                        <tbody id="query-return">
-                            <tr>
-                                <td>&hellip;</td>
-                                <td>&hellip;</td>
-                                <td>&hellip;</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <style>
-                #reload {
-                    font-size: 16px;
-                }
-            </style>
-            <div class="query-region">
-                <h2 class="center">Query Writer</h2>
-                <div id="error" class="center"></div>
-                <textarea id="code" rows="3"></textarea>
-                <div class="center"><button onclick="runQuery()" class="center" id="run-button"><i
-                            class="fas fa-database"></i> Run Query</button>
-                    <button id="reload"><i class="fas fa-sync-alt"></i> Reload DB</button></div>
+                <table class="structure">
+                    <thead>
+                        <tr>
+                            <th>customer_description <br><em>VARCHAR(60)</em></th>
+                            <th>items_purchased <br><em>VARCHAR(30)</em></th>
+                            <th>amount_paid <br><em>DECIMAL</em></th>
+                        </tr>
+                    </thead>
+                    <tbody id="query-return">
+                        <tr>
+                            <td>&hellip;</td>
+                            <td>&hellip;</td>
+                            <td>&hellip;</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-
-        <div id="test"></div>
-
-        <br>
-        <br>
-
-        <script src="js/sql-wasm.js"></script>
-        <script src="js/main.js"></script>
-        <script>
-            const exercise = new Exercise('costume', "White jacket, chef's hat. Baker?", "customer_description",
-                "narrative3.html");
-
-            var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
-                lineNumbers: true,
-                mode: 'text/x-sql',
-                smartIndent: true,
-                indentWithTabs: true,
-                lineWrapping: false,
-                scrollbarStyle: "null",
-                theme: 'nord',
-                viewportMargin: Infinity
-            });
-
-            function run(query) {
-                try {
-                    var stmt = database.exec(query);
-                    return stmt;
-                } catch (err) {
-                    var error_div = document.getElementById("error");
-                    error_div.innerHTML = "";
-                    console.log(err.message);
-                    var error_info = document.createElement("p");
-                    error_info.innerText = err.message;
-                    error_div.appendChild(error_info);
-                    return false;
-                }
+        <style>
+            #reload {
+                font-size: 16px;
             }
+        </style>
+        <div class="query-region">
+            <h2 class="center">Query Writer</h2>
+            <div id="how-to" class="center">
+                <p><em>How do I use this?</em></p>
+            </div>
+            <div id="error" class="center"></div>
+            <textarea id="code" rows="3"></textarea>
+            <div class="center"><button onclick="runQuery()" class="center" id="run-button"><i
+                        class="fas fa-database"></i> Run Query</button>
+                <button id="reload"><i class="fas fa-sync-alt"></i> Reload DB</button></div>
+        </div>
+    </div>
 
-            function runQuery() {
-                var query = editor.getValue();
-                var result = run(query);
-                if (result !== false) {
-                    showResults(document.getElementById('test'), result, query);
-                }
+    <div id="test"></div>
+
+    <br>
+    <br>
+
+    <script src="js/sql-wasm.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        const exercise = new Exercise('costume', "White jacket, chef's hat. Baker?", "customer_description",
+            "narrative3.html");
+
+        var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+            lineNumbers: true,
+            mode: 'text/x-sql',
+            smartIndent: true,
+            indentWithTabs: true,
+            lineWrapping: false,
+            scrollbarStyle: "null",
+            theme: 'nord',
+            viewportMargin: Infinity
+        });
+
+        function run(query) {
+            try {
+                var stmt = database.exec(query);
+                return stmt;
+            } catch (err) {
+                var error_div = document.getElementById("error");
+                error_div.innerHTML = "";
+                console.log(err.message);
+                var error_info = document.createElement("p");
+                error_info.innerText = err.message;
+                error_div.appendChild(error_info);
+                return false;
             }
-        </script>
-        <script>
-            getDatabase('costume_shop.db');
-            var reload = document.getElementById('reload');
-            reload.addEventListener('click', function () {
-                reloadDB('costume_shop.db');
-            });
-        </script>
+        }
+
+        function runQuery() {
+            var query = editor.getValue();
+            var result = run(query);
+            if (result !== false) {
+                showResults(document.getElementById('test'), result, query);
+            }
+        }
+    </script>
+    <script>
+        getDatabase('costume_shop.db');
+        var reload = document.getElementById('reload');
+        reload.addEventListener('click', function () {
+            reloadDB('costume_shop.db');
+        });
+    </script>
+
+    <script type="text/javascript">
+        var modal = new tingle.modal({
+            footer: false,
+            closeMethods: ['overlay', 'escape', 'button'],
+            closeLabel: 'Close'
+        });
+
+        modal.setContent(`
+        <h2>Using the Query Writer</h2>
+        <p>The query writer works a lot like the query builder, but you have to do more typing!</p>
+        <p>Instead of tapping the buttons, it's time to use the skills you've learnt to write out your own queries. We use a special plugin to make writing code as realistic as possible. This means that you can lay your code out however you want! It can become really useful as your queries get bigger.</p>
+        <p>Don't be afraid of jumping onto the next line by pressing <code>ENTER</code>. As long as you don't break up a word, you can spread your query out over several lines to make it more readable.</p>
+        <p>When you're done, hit 'Run Query'. If you're just practicing SQL and accidentally delete the table, the database or alter the table schema, just press 'Reload DB'.</p>
+        <p>Happy Querying!</p>
+        `);
+
+        var info_modal_trigger = document.getElementById('how-to');
+        info_modal_trigger.addEventListener('click', function () {
+            modal.open();
+        });
+    </script>
+
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+
+    <script>
+        tippy('#database_pop', {
+            content: `A collection of one or more tables to store the data. 
+            These tables are often linked through relationships.`,
+            animation: 'scale'
+        });
+    </script>
 </body>
 
 </html>

@@ -128,6 +128,10 @@ function showResults(wrapper, results, statement) {
 
 }
 
+/**
+ * @constructor
+ * @param {string} text 
+ */
 function Component(text) {
     var re_comparison = />|<|=/g
     this.text = text;
@@ -186,6 +190,10 @@ function displayText() {
     query_box.value = statement;
 }
 
+/**
+ * Adds a number to the query and clears the input box
+ * @param {string} id ID of the number input element 
+ */
 function addNum(id) {
     const num_input = document.getElementById(id);
     if (num_input.value !== "") {

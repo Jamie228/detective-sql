@@ -18,6 +18,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/animations/scale.css" />
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.js"
         integrity="sha512-plGUER9JkeEWPPqQBE4sdLqBoQug5Ap+BCGMc7bJ8BXkm+VVj6QzkpBz5Yv2yPkkq+cqg9IpkBaGCas6uDbW8g=="
         crossorigin="anonymous"></script>
@@ -53,10 +55,9 @@
 
     <div class="explan">
         <p>SQL queries to 'read' data are usually comprised of three parts: SELECT, FROM and WHERE. We use the SELECT
-            statement to define which <em
-                title="A field can be thought of like a column heading (like 'id', or 'name')">field(s)</em> we want the
+            statement to define which <span id="field_pop" class="tt">field(s)</span> we want the
             query to return. FROM tells the database which
-            <em title="A table is a... Table! It holds all of our records.">table</em> we would like to select it from.
+            <span id="table_pop" class="tt">table</span> we would like to select it from.
             In this case, it is the <code>cctv</code> table. Finally,
             the WHERE statement lets us specify some criteria for our query. In this case, we need to select data WHERE
             the id is equal to 738.
@@ -167,6 +168,7 @@
             modal.open();
         });
 
+        /** Runs query against DB */
         function query() {
             try {
                 var stmt = database.exec(query_box.value);
@@ -182,6 +184,7 @@
             }
         }
 
+        /** Chacks query for errors before running on DB */
         function runQuery() {
             var error_div = document.getElementById("error");
             error_div.innerHTML = "";
@@ -211,6 +214,23 @@
             }
 
         }
+    </script>
+
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+
+    <script>
+        tippy('#table_pop', {
+            content: `A lot like an actual table - it contains rows (of data) and columns (fields). 
+                Each row is usually identified by a unique value, which is known as a primary key.`,
+            animation: 'scale'
+        });
+
+        tippy('#field_pop', {
+            content: `A set of database values of the same data type. 
+                You can think of it as a column in a table (like "first name" or "job title").`,
+            animation: 'scale'
+        })
     </script>
 
 </body>

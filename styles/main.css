@@ -3,6 +3,10 @@
     --poppins: 'Poppins', sans-serif;
 }
 
+.tippy-box {
+    font-family: var(--poppins)
+}
+
 html,body
 {
     width: 100%;
@@ -165,6 +169,12 @@ table, th, td {
 
 .fr h1 {
     font-family: var(--fredoka);
+}
+
+.tt {
+    color: #FF8C00;
+    text-decoration: underline;
+    cursor: help;
 }
 
 .orange {
