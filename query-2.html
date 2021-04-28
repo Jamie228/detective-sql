@@ -61,7 +61,7 @@
     </div>
 
     <div class="explan">
-        <p>Good job on that first query. For this one, we need to return all the records in the <span id="database_pop"
+        <p>Good job on that first query. For this one, we need to return all the <span id="record_pop" class="tt">records</span> in the <span id="database_pop"
                 class="tt">database</span>. The first
             thing to consider is that not all queries need a <code>WHERE</code> clause - you only need it if you want to
             refine the data being returned.</p>
@@ -198,6 +198,11 @@
         tippy('#database_pop', {
             content: `A collection of one or more tables to store the data. 
             These tables are often linked through relationships.`,
+            animation: 'scale'
+        });
+
+        tippy('#record_pop', {
+            content: 'A single entry in the database. Also known as a row in a table.',
             animation: 'scale'
         });
     </script>
