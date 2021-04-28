@@ -54,7 +54,7 @@
     </div>
 
     <div class="explan">
-        <p>SQL queries to 'read' data are usually comprised of three parts: SELECT, FROM and WHERE. We use the SELECT
+        <p>SQL <span id="query_pop" class="tt">queries</span> to 'read' data are usually comprised of three parts: SELECT, FROM and WHERE. We use the SELECT
             statement to define which <span id="field_pop" class="tt">field(s)</span> we want the
             query to return. FROM tells the database which
             <span id="table_pop" class="tt">table</span> we would like to select it from.
@@ -230,7 +230,12 @@
             content: `A set of database values of the same data type. 
                 You can think of it as a column in a table (like "first name" or "job title").`,
             animation: 'scale'
-        })
+        });
+
+        tippy('#query_pop', {
+            content: 'A request for information from the database.',
+            animation: 'scale'
+        });
     </script>
 
 </body>
