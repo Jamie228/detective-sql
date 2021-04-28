@@ -63,7 +63,7 @@
 
     <div class="explan">
         <p>Look through the content above and make sure you understand the concept of querying for <span id="string_pop" class="tt">strings</span> and using the
-            <code>AND</code> logic operator. Then, when you're ready, write a query below that returns the records the
+            <code>AND</code> <span id="log_op_pop" class="tt">logic operator</span>. Then, when you're ready, write a query below that returns the records the
             satisfy both of the search criteria:</p>
         <ol>
             <li>The data has a batch number of <code>K50</code></li>
@@ -203,6 +203,11 @@
     <script>
         tippy('#string_pop', {
             content: `A data value made up of ordered sequences of characters like "hello, world!".`,
+            animation: 'scale'
+        });
+
+        tippy('#log_op_pop', {
+            content: `The logical AND operator is only true if and only if all of its operands evaluate to true.`,
             animation: 'scale'
         });
     </script>
